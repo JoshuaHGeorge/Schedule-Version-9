@@ -7,13 +7,121 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World!"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/nav_view">
+        <Button
+                android:text="Schedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/nav_list" android:layout_weight="1"/>
+        <Button
+                android:text="New"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/nav_create" android:layout_weight="1"/>
+    </LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/alarm_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nav_view">
+        <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp" android:id="@+id/alarm_arange">
+            </LinearLayout>
+        </HorizontalScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/alarm_create"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nav_view"
+            android:visibility="gone"
+    >
+
+        <EditText
+                android:id="@+id/course_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:ems="10"
+                android:hint="Course"
+                android:inputType="textPersonName"
+                android:text="@string/new_course"
+                android:textColor="@color/colorPrimaryLight"
+                android:textColorHint="@color/design_default_color_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/save_alarm"/>
+
+
+        <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="/"
+                app:layout_constraintBottom_toBottomOf="@+id/day_input"
+                app:layout_constraintStart_toEndOf="@+id/day_input"
+                app:layout_constraintTop_toTopOf="@+id/day_input"/>
+
+        <EditText
+                android:id="@+id/day_input"
+                android:layout_width="58dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:ems="10"
+                android:hint="DD"
+                android:inputType="number"
+                app:layout_constraintStart_toStartOf="@+id/course_input"
+                app:layout_constraintTop_toBottomOf="@+id/course_input"/>
+
+        <EditText
+                android:id="@+id/month_input"
+                android:layout_width="62dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:ems="10"
+                android:hint="MM"
+                android:inputType="number"
+                app:layout_constraintBottom_toBottomOf="@+id/day_input"
+                app:layout_constraintStart_toEndOf="@+id/textView2"
+                app:layout_constraintTop_toTopOf="@+id/day_input"/>
+
+        <EditText
+                android:id="@+id/time_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="10:00"
+                android:inputType="time"
+                app:layout_constraintStart_toStartOf="@+id/day_input"
+                app:layout_constraintTop_toBottomOf="@+id/day_input"/>
+
+        <Button
+                android:id="@+id/save_alarm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Save"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
