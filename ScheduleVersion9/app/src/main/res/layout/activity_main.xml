@@ -10,8 +10,9 @@
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/nav_view">
+            android:layout_height="wrap_content"
+            android:id="@+id/nav_view" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent">
         <Button
                 android:text="Schedule"
                 android:layout_width="wrap_content"
@@ -46,7 +47,6 @@
             android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/nav_view"
-            android:visibility="gone"
     >
 
         <EditText
@@ -61,7 +61,7 @@
                 android:inputType="textPersonName"
                 android:text="@string/new_course"
                 android:textColor="@color/colorPrimaryLight"
-                android:textColorHint="@color/design_default_color_background"
+                android:textColorHint="@color/colorHint"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/save_alarm"/>

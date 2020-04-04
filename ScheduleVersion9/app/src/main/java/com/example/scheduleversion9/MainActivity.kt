@@ -7,10 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import android.icu.util.Calendar
 import android.view.View
 import android.view.View.VISIBLE
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 
@@ -57,6 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         saveAlarm.setOnClickListener()
         {
+            databaseSubmission();
             val newAlarm = Button(applicationContext) // make a new item
 
             newAlarm.text = courseInput.text; // set the text of the new item
@@ -66,6 +64,22 @@ class MainActivity : AppCompatActivity() {
 
             changeToList(); // change to view the list
         }
+    }
+
+    private fun databaseSubmission()
+    {
+        val newSchedule = HashMap<String, Any>();
+        newSchedule.put("course", courseInput.text.toString());
+
+        // Add a new schedule with a generated ID
+        db.collection("schedules")
+            .add(newSchedule)
+            .addOnSuccessListener { documentReference ->
+                Toast.makeText(this, "Alarm saved with ID: " + documentReference.id, Toast.LENGTH_LONG).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error: " + e.message, Toast.LENGTH_LONG).show()
+            }
     }
 
     private fun changeToList()
