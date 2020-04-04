@@ -18,6 +18,9 @@ class MainActivity : AppCompatActivity() {
 
     var db = FirebaseFirestore.getInstance()
 
+    private lateinit var navList: Button;
+    private lateinit var navCreate: Button;
+
     private lateinit var alarmList: ConstraintLayout;
     private lateinit var alarmArange: LinearLayout;
 
@@ -33,12 +36,24 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        navList = findViewById(R.id.nav_list) as Button;
+        navCreate = findViewById(R.id.nav_create) as Button;
+
         alarmList = findViewById(R.id.alarm_list) as ConstraintLayout
         alarmArange = findViewById(R.id.alarm_arange) as LinearLayout
         alarmCreate = findViewById(R.id.alarm_create) as ConstraintLayout
 
         saveAlarm = findViewById(R.id.save_alarm) as Button;
         courseInput = findViewById(R.id.course_input) as EditText;
+
+        navList.setOnClickListener()
+        {
+            changeToList();
+        }
+        navCreate.setOnClickListener()
+        {
+            changeToCreate();
+        }
 
         saveAlarm.setOnClickListener()
         {
@@ -57,5 +72,10 @@ class MainActivity : AppCompatActivity() {
     {
         alarmCreate.visibility = View.GONE;
         alarmList.visibility = View.VISIBLE;
+    }
+    private fun changeToCreate()
+    {
+        alarmList.visibility = View.GONE;
+        alarmCreate.visibility = View.VISIBLE;
     }
 }
