@@ -22,21 +22,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/nav_create" android:layout_weight="1"/>
     </LinearLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/alarm_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nav_view">
+            app:layout_constraintTop_toBottomOf="@+id/nav_view" app:layout_constraintEnd_toEndOf="parent">
         <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/horizontalScrollView"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
             <LinearLayout
                     android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp" android:id="@+id/alarm_arange">
+                <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="/" app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="parent"
+                        android:layout_weight="1"/>
             </LinearLayout>
         </HorizontalScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -47,6 +60,7 @@
             android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/nav_view"
+            android:visibility="gone"
     >
 
         <EditText
@@ -59,7 +73,6 @@
                 android:ems="10"
                 android:hint="Course"
                 android:inputType="textPersonName"
-                android:text="@string/new_course"
                 android:textColor="@color/colorPrimaryLight"
                 android:textColorHint="@color/colorHint"
                 app:layout_constraintEnd_toEndOf="parent"

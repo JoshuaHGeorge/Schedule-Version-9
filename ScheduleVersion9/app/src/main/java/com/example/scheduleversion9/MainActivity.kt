@@ -10,6 +10,18 @@ import android.view.View.VISIBLE
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+//import jdk.nashorn.internal.runtime.ECMAException.getException
+//import androidx.test.orchestrator.junit.BundleJUnitUtils.getResult
+import com.google.firebase.firestore.QueryDocumentSnapshot
+//import org.junit.experimental.results.ResultMatchers.isSuccessful
+import com.google.firebase.firestore.QuerySnapshot
+import com.google.android.gms.tasks.Task
+import androidx.annotation.NonNull
+import com.google.android.gms.tasks.OnCompleteListener
+
+
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -55,12 +67,30 @@ class MainActivity : AppCompatActivity() {
         saveAlarm.setOnClickListener()
         {
             databaseSubmission();
-            val newAlarm = Button(applicationContext) // make a new item
+//            val newAlarm = Button(applicationContext) // make a new item
+//
+//            newAlarm.text = courseInput.text; // set the text of the new item
+//            courseInput.setText(""); // clear the text of the input
+//
+//            alarmArange.addView(newAlarm); // put the item in the list
 
-            newAlarm.text = courseInput.text; // set the text of the new item
-            courseInput.setText(""); // clear the text of the input
+            db.collection("schedules")
+                .get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        for (document in task.result!!) {
+//                        Log.d(FragmentActivity.TAG, document.id + " => " + document.data)
+                            val newAlarm = Button(applicationContext) // make a new item
 
-            alarmArange.addView(newAlarm); // put the item in the list
+                            newAlarm.text = "test"; // set the text of the new item
+                            courseInput.setText(""); // clear the text of the input
+
+                            alarmArange.addView(newAlarm); // put the item in the list
+                        }
+                    } else {
+//                    Log.w(FragmentActivity.TAG, "Error getting documents.", task.exception)
+                    }
+                }
 
             changeToList(); // change to view the list
         }
@@ -79,6 +109,27 @@ class MainActivity : AppCompatActivity() {
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Error: " + e.message, Toast.LENGTH_LONG).show()
+            }
+    }
+
+    private fun databaseRead()
+    {
+        db.collection("schedules")
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result!!) {
+//                        Log.d(FragmentActivity.TAG, document.id + " => " + document.data)
+                        val newAlarm = Button(applicationContext) // make a new item
+
+                        newAlarm.text = document.data.toString(); // set the text of the new item
+                        courseInput.setText(""); // clear the text of the input
+
+                        alarmArange.addView(newAlarm); // put the item in the list
+                    }
+                } else {
+//                    Log.w(FragmentActivity.TAG, "Error getting documents.", task.exception)
+                }
             }
     }
 
