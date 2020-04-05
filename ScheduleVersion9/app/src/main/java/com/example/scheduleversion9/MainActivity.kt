@@ -22,7 +22,6 @@ import com.google.android.gms.tasks.OnCompleteListener
 
 
 
-
 class MainActivity : AppCompatActivity() {
 
     var db = FirebaseFirestore.getInstance()
@@ -74,23 +73,25 @@ class MainActivity : AppCompatActivity() {
 //
 //            alarmArange.addView(newAlarm); // put the item in the list
 
-            db.collection("schedules")
-                .get()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        for (document in task.result!!) {
-//                        Log.d(FragmentActivity.TAG, document.id + " => " + document.data)
-                            val newAlarm = Button(applicationContext) // make a new item
+//            db.collection("schedules")
+//                .get()
+//                .addOnCompleteListener { task ->
+//                    if (task.isSuccessful) {
+//                        for (document in task.result!!) {
+////                        Log.d(FragmentActivity.TAG, document.id + " => " + document.data)
+//                            val newAlarm = Button(applicationContext) // make a new item
+//
+//                            newAlarm.text = "test"; // set the text of the new item
+//                            courseInput.setText(""); // clear the text of the input
+//
+//                            alarmArange.addView(newAlarm); // put the item in the list
+//                        }
+//                    } else {
+////                    Log.w(FragmentActivity.TAG, "Error getting documents.", task.exception)
+//                    }
+//                }
 
-                            newAlarm.text = "test"; // set the text of the new item
-                            courseInput.setText(""); // clear the text of the input
-
-                            alarmArange.addView(newAlarm); // put the item in the list
-                        }
-                    } else {
-//                    Log.w(FragmentActivity.TAG, "Error getting documents.", task.exception)
-                    }
-                }
+            databaseRead();
 
             changeToList(); // change to view the list
         }
@@ -114,6 +115,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun databaseRead()
     {
+        alarmArange.removeAllViewsInLayout();
+
         db.collection("schedules")
             .get()
             .addOnCompleteListener { task ->
@@ -122,7 +125,7 @@ class MainActivity : AppCompatActivity() {
 //                        Log.d(FragmentActivity.TAG, document.id + " => " + document.data)
                         val newAlarm = Button(applicationContext) // make a new item
 
-                        newAlarm.text = document.data.toString(); // set the text of the new item
+                        newAlarm.text = document.get("course").toString(); // set the text of the new item
                         courseInput.setText(""); // clear the text of the input
 
                         alarmArange.addView(newAlarm); // put the item in the list
@@ -133,12 +136,12 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    private fun changeToList()
+    fun changeToList()
     {
         alarmCreate.visibility = View.GONE;
         alarmList.visibility = View.VISIBLE;
     }
-    private fun changeToCreate()
+    fun changeToCreate()
     {
         alarmList.visibility = View.GONE;
         alarmCreate.visibility = View.VISIBLE;
