@@ -167,7 +167,7 @@
                 android:layout_marginTop="28dp"
                 android:ems="10"
                 android:hint="10"
-                android:inputType="number|time"
+                android:inputType="time"
                 app:layout_constraintStart_toStartOf="@+id/day_input"
                 app:layout_constraintTop_toBottomOf="@+id/day_input"
                 android:textColorHint="@color/colorHint"
