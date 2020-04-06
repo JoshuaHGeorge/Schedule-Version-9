@@ -143,9 +143,13 @@ class MainActivity : AppCompatActivity() {
     private fun databaseSubmission()
     {
         var hour = hourInput.text.toString().toInt();
-        if(ampm.text == "pm" || hour != 12)
+        if(ampm.text == "pm" && hour != 12)
         {
             hour += 12;
+        }
+        if(ampm.text == "am" && hour == 12)
+        {
+            hour = 0;
         }
 
         val due = dayInput.text.toString().trim() + "/" +
