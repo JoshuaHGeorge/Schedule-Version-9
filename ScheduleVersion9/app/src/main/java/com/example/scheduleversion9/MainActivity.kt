@@ -12,7 +12,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 //import androidx.test.orchestrator.junit.BundleJUnitUtils.getResult
 //import org.junit.experimental.results.ResultMatchers.isSuccessful
 import android.app.Activity
+import android.content.Context
+import android.content.res.Configuration
 import android.view.Gravity
+import android.view.OrientationEventListener
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.inputmethod.InputMethodManager
 
@@ -94,8 +97,16 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+
         databaseRead();
     }
+
+    override fun onConfigurationChanged(newConfig: Configuration)
+    {
+        super.onConfigurationChanged(newConfig);
+        databaseRead();
+    }
+
 
     private fun databaseSubmission()
     {
@@ -119,7 +130,6 @@ class MainActivity : AppCompatActivity() {
     private fun databaseRead()
     {
         alarmArange.removeAllViewsInLayout();
-        alarmArange.gravity = Gravity.BOTTOM;
 
         db.collection("schedules")
             .get()
@@ -129,22 +139,22 @@ class MainActivity : AppCompatActivity() {
 //                        Log.d(FragmentActivity.TAG, document.id + " => " + document.data)
                         val newAlarm = Button(applicationContext) // make a new item
 
-                        val params = LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT
-                        ).apply {
-                            weight = 1.0f
-                            gravity = Gravity.BOTTOM
-                        }
+//                        val params = LinearLayout.LayoutParams(
+//                            LinearLayout.LayoutParams.WRAP_CONTENT,
+//                            LinearLayout.LayoutParams.WRAP_CONTENT
+//                        ).apply {
+//                            weight = 1.0f
+//                            gravity = Gravity.BOTTOM
+//                        }
+//
+//                        newAlarm.layoutParams = (params);
 
-                        newAlarm.setLayoutParams(params);
-
-                        var padding = (alarmList.height - newAlarm.height)/ 15 ;
+                        var padding = (alarmArange.height - newAlarm.height)/ 15 ;
                         var due = (document.get("due"));
 
                         newAlarm.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
-                        if(due == null )
+                        if(due == null || due == "")
                         {
                             padding =  newAlarm.paddingBottom; // padding size if no due date is found or is due/ past due
                         }
@@ -158,7 +168,7 @@ class MainActivity : AppCompatActivity() {
                             }
                             else if (due <= 0)
                             {
-                                padding = padding * (15 - 1);// max padding size if is due/ past due
+                                padding = newAlarm.paddingBottom + (padding * (14)) - 40;// max padding size if is due/ past due
                                 newAlarm.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                             }
                             else if (due >= 14)
@@ -167,7 +177,7 @@ class MainActivity : AppCompatActivity() {
                             }
                             else
                             {
-                                padding = padding * (15 - due - 1); // padding set to corrospond with the number of days till due;
+                                padding = newAlarm.paddingBottom  + (padding * (14 - due)) - 40; // padding set to corrospond with the number of days till due;
                             }
                         }
 
@@ -176,13 +186,20 @@ class MainActivity : AppCompatActivity() {
                         newAlarm.text = document.get("course").toString(); // set the text of the new item
                         newAlarm.contentDescription = document.get("due").toString();
 
-                        courseInput.setText(""); // clear the text of the input
+                        while(newAlarm.height >= alarmArange.height){
+                            if(due == 1){
+                                padding -= 20;
+                            }
+                            padding--;
+                            newAlarm.setPadding(newAlarm.paddingLeft, newAlarm.paddingTop, newAlarm.paddingRight, padding);
+                        }
 
-                        alarmArange.gravity = Gravity.BOTTOM;
+                        courseInput.setText(""); // clear the text of the input
+                        dayInput.setText(""); // clear the text of the input
+
 //                        newAlarm.gravity = 50;
                         alarmArange.addView(newAlarm); // put the item in the list
 //                        newAlarm.gravity = 50;
-                        alarmArange.gravity = Gravity.BOTTOM;
                     }
                 } else {
 //                    Log.w(FragmentActivity.TAG, "Error getting documents.", task.exception)
@@ -192,11 +209,13 @@ class MainActivity : AppCompatActivity() {
 
     fun changeToList()
     {
+        hideKeyboard(this);
         alarmCreate.visibility = View.GONE;
         alarmList.visibility = View.VISIBLE;
     }
     fun changeToCreate()
     {
+        hideKeyboard(this);
         alarmList.visibility = View.GONE;
         alarmCreate.visibility = View.VISIBLE;
     }
