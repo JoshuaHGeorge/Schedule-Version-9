@@ -22,7 +22,7 @@ class ScheduleList : AppCompatActivity()
     {
         super.onCreate(savedInstanceState)
 
-        recyclerViewSchedules.setLayoutManager(LinearLayoutManager(this));
+//        recyclerViewSchedules.setLayoutManager(LinearLayoutManager(this));
 
         val query = db.collection("schedules");
 

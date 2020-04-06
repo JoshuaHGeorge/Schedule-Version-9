@@ -12,6 +12,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 //import androidx.test.orchestrator.junit.BundleJUnitUtils.getResult
 //import org.junit.experimental.results.ResultMatchers.isSuccessful
 import android.app.Activity
+import android.view.Gravity
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.inputmethod.InputMethodManager
 
 
@@ -117,6 +119,7 @@ class MainActivity : AppCompatActivity() {
     private fun databaseRead()
     {
         alarmArange.removeAllViewsInLayout();
+        alarmArange.gravity = Gravity.BOTTOM;
 
         db.collection("schedules")
             .get()
@@ -126,9 +129,20 @@ class MainActivity : AppCompatActivity() {
 //                        Log.d(FragmentActivity.TAG, document.id + " => " + document.data)
                         val newAlarm = Button(applicationContext) // make a new item
 
-                        var padding = (alarmList.height - newAlarm.height)/ 14 ;
+                        val params = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply {
+                            weight = 1.0f
+                            gravity = Gravity.BOTTOM
+                        }
+
+                        newAlarm.setLayoutParams(params);
+
+                        var padding = (alarmList.height - newAlarm.height)/ 15 ;
                         var due = (document.get("due"));
 
+                        newAlarm.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
                         if(due == null )
                         {
@@ -144,7 +158,8 @@ class MainActivity : AppCompatActivity() {
                             }
                             else if (due <= 0)
                             {
-                                padding = padding * 14; // max padding size if is due/ past due
+                                padding = padding * (15 - 1);// max padding size if is due/ past due
+                                newAlarm.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                             }
                             else if (due >= 14)
                             {
@@ -152,17 +167,22 @@ class MainActivity : AppCompatActivity() {
                             }
                             else
                             {
-                                padding = padding * (14 - due); // padding set to corrospond with the number of days till due;
+                                padding = padding * (15 - due - 1); // padding set to corrospond with the number of days till due;
                             }
                         }
 
 
                         newAlarm.setPadding(newAlarm.paddingLeft, newAlarm.paddingTop, newAlarm.paddingRight, padding);
                         newAlarm.text = document.get("course").toString(); // set the text of the new item
+                        newAlarm.contentDescription = document.get("due").toString();
 
                         courseInput.setText(""); // clear the text of the input
 
+                        alarmArange.gravity = Gravity.BOTTOM;
+//                        newAlarm.gravity = 50;
                         alarmArange.addView(newAlarm); // put the item in the list
+//                        newAlarm.gravity = 50;
+                        alarmArange.gravity = Gravity.BOTTOM;
                     }
                 } else {
 //                    Log.w(FragmentActivity.TAG, "Error getting documents.", task.exception)

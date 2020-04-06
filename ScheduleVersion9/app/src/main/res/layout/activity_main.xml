@@ -37,15 +37,20 @@
                 android:id="@+id/horizontalScrollView"
                 app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/recyclerViewSchedules">
+                app:layout_constraintBottom_toBottomOf="parent">
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:gravity="bottom"
                     android:layout_gravity="bottom"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:id="@+id/alarm_arrange">
+                    android:id="@+id/alarm_arrange"
+                    android:showDividers="middle"
+                    android:divider="@drawable/empty_tall_divider"
+
+            >
                 <TextView
                         android:id="@+id/textView"
                         android:layout_width="wrap_content"
@@ -57,9 +62,6 @@
                         android:layout_weight="1"/>
             </LinearLayout>
         </HorizontalScrollView>
-        <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" android:id="@+id/recyclerViewSchedules"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
