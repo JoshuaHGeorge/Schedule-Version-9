@@ -79,36 +79,43 @@ class MainActivity : AppCompatActivity() {
 
         saveAlarm.setOnClickListener()
         {
-            hideKeyboard(this);
-            databaseSubmission();
-//            val newAlarm = Button(applicationContext) // make a new item
-//
-//            newAlarm.text = courseInput.text; // set the text of the new item
-//            courseInput.setText(""); // clear the text of the input
-//
-//            alarmArange.addView(newAlarm); // put the item in the list
-
-//            db.collection("schedules")
-//                .get()
-//                .addOnCompleteListener { task ->
-//                    if (task.isSuccessful) {
-//                        for (document in task.result!!) {
-////                        Log.d(FragmentActivity.TAG, document.id + " => " + document.data)
-//                            val newAlarm = Button(applicationContext) // make a new item
-//
-//                            newAlarm.text = "test"; // set the text of the new item
-//                            courseInput.setText(""); // clear the text of the input
-//
-//                            alarmArange.addView(newAlarm); // put the item in the list
-//                        }
-//                    } else {
-////                    Log.w(FragmentActivity.TAG, "Error getting documents.", task.exception)
-//                    }
-//                }
-
-            changeToList(); // change to view the list
-            databaseRead();
-
+            if(courseInput.text.toString() == ""
+                ||dayInput.text.toString() == ""
+                ||monthInput.text.toString() == ""
+                ||yearInput.text.toString() == ""
+                ||hourInput.text.toString() == ""
+                ||minuteInput.text.toString() == "")
+            {
+                Toast.makeText(this, "Form Incomplete", Toast.LENGTH_LONG).show()
+            }
+            else if(dayInput.text.toString().toInt() == null ||
+                monthInput.text.toString().toInt() == null ||
+                yearInput.text.toString().toInt() == null ||
+                hourInput.text.toString().toInt() == null ||
+                minuteInput.text.toString().toInt() == null)
+            {
+                Toast.makeText(this, "Non-number Input", Toast.LENGTH_LONG).show()
+            }
+            else if(dayInput.text.toString().toInt() < 1 ||
+                monthInput.text.toString().toInt() < 1 ||
+                yearInput.text.toString().toInt() < 0 ||
+                hourInput.text.toString().toInt() < 0 ||
+                minuteInput.text.toString().toInt() < 0 ||
+                dayInput.text.toString().toInt() > 31 ||
+                monthInput.text.toString().toInt() > 12 ||
+                yearInput.text.toString().toInt() > 99 ||
+                hourInput.text.toString().toInt() >  12 ||
+                minuteInput.text.toString().toInt() > 59)
+            {
+                Toast.makeText(this, "Time out of range", Toast.LENGTH_LONG).show()
+            }
+            else
+            {
+                hideKeyboard(this);
+                databaseSubmission();
+                changeToList(); // change to view the list
+                databaseRead();
+            }
         }
 
         ampm.setOnClickListener()
@@ -135,18 +142,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun databaseSubmission()
     {
-//        if(courseInput.text.toString() == ""
-//            ||dayInput.text.toString() == ""
-//            ||monthInput.text.toString() == ""
-//            ||yearInput.text.toString() == ""
-//            ||hourInput.text.toString() == ""
-//            ||Input.text.toString() == ""
-//            ||dayInput.text.toString() == ""
-//            ||)
+        var hour = hourInput.text.toString().toInt();
+        if(ampm.text == "pm" || hour != 12)
+        {
+            hour += 12;
+        }
+
         val due = dayInput.text.toString().trim() + "/" +
                 monthInput.text.toString().trim() + "/20" +
                 yearInput.text.toString().trim() + " " +
-                hourInput.text.toString().trim() + ":" +
+                hour + ":" +
                 dayInput.text.toString().trim();
 
         val newSchedule = HashMap<String, Any>();
@@ -309,9 +314,29 @@ class MainActivity : AppCompatActivity() {
         val differenceDays = difference / (24 * 60 * 60 * 1000);
         val differenceHours = (difference / ( 60 * 60 * 1000)) % 24;
 
-        //Convert long to String
-        val dayDifference = differenceDays.toInt().toString() + "Days, " + differenceHours.toInt().toString() + "Hours";
+        var toasty = "";
 
-        Toast.makeText(this, dayDifference.toString(), Toast.LENGTH_LONG).show()
+        //Convert long to String
+        if(differenceDays <= 0 && differenceHours <= 0)
+        {
+            toasty = "Past Due"
+        }
+        else if(differenceDays.toInt() == 1 && differenceHours.toInt() == 1)
+        {
+            toasty = "Due in: " + differenceDays.toInt().toString() + " Day, " + differenceHours.toInt().toString() + " Hour";
+        }
+        else if(differenceDays.toInt() == 1)
+        {
+            toasty = "Due in: " + differenceDays.toInt().toString() + " Day, " + differenceHours.toInt().toString() + " Hours";
+        }
+        else if(differenceHours.toInt() == 1)
+        {
+            toasty = "Due in: " + differenceDays.toInt().toString() + " Days, " + differenceHours.toInt().toString() + " Hour";
+        }
+        else {
+            toasty = "Due in: " + differenceDays.toInt().toString() + " Days, " + differenceHours.toInt().toString() + " Hours";
+        }
+
+        Toast.makeText(this, toasty.toString(), Toast.LENGTH_LONG).show()
     }
 }
