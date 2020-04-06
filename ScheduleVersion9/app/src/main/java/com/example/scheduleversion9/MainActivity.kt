@@ -18,6 +18,10 @@ import android.view.Gravity
 import android.view.OrientationEventListener
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.inputmethod.InputMethodManager
+import com.google.common.primitives.UnsignedBytes.toInt
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 
 class MainActivity : AppCompatActivity() {
@@ -36,8 +40,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var saveAlarm: Button;
     private lateinit var courseInput: EditText;
     private lateinit var dayInput: EditText;
+    private lateinit var monthInput: EditText;
+    private lateinit var yearInput: EditText;
+    private lateinit var hourInput: EditText;
+    private lateinit var minuteInput: EditText;
+    private lateinit var ampm: Button;
 
-    var c = Calendar.getInstance().getTime();
+    var current = Calendar.getInstance().getTime();
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +62,11 @@ class MainActivity : AppCompatActivity() {
         saveAlarm = findViewById(R.id.save_alarm) as Button;
         courseInput = findViewById(R.id.course_input) as EditText;
         dayInput = findViewById(R.id.day_input) as EditText;
+        monthInput = findViewById(R.id.month_input) as EditText;
+        yearInput = findViewById(R.id.year_input) as EditText;
+        hourInput = findViewById(R.id.hour_input) as EditText;
+        minuteInput = findViewById(R.id.minute_input) as EditText;
+        ampm = findViewById(R.id.ampm) as Button;
 
         navList.setOnClickListener()
         {
@@ -97,6 +111,17 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        ampm.setOnClickListener()
+        {
+            if(ampm.text == "am")
+            {
+                ampm.text = "pm"
+            }
+            else
+            {
+                ampm.text = "am"
+            }
+        }
 
         databaseRead();
     }
@@ -110,7 +135,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun databaseSubmission()
     {
-        val due = dayInput.text.toString().trim();
+//        if(courseInput.text.toString() == ""
+//            ||dayInput.text.toString() == ""
+//            ||monthInput.text.toString() == ""
+//            ||yearInput.text.toString() == ""
+//            ||hourInput.text.toString() == ""
+//            ||Input.text.toString() == ""
+//            ||dayInput.text.toString() == ""
+//            ||)
+        val due = dayInput.text.toString().trim() + "/" +
+                monthInput.text.toString().trim() + "/20" +
+                yearInput.text.toString().trim() + " " +
+                hourInput.text.toString().trim() + ":" +
+                dayInput.text.toString().trim();
 
         val newSchedule = HashMap<String, Any>();
         newSchedule.put("course", courseInput.text.toString().trim());
@@ -150,17 +187,32 @@ class MainActivity : AppCompatActivity() {
 //                        newAlarm.layoutParams = (params);
 
                         var padding = (alarmArange.height - newAlarm.height)/ 15 ;
-                        var due = (document.get("due"));
+                        var holdDue = (document.get("due"));
+                        val CurrentDate = current.time;
+
+                        val date1: Date
+                        val date2: Date
+
+                        val dates = SimpleDateFormat("dd/MM/yyyy hh:mm")
+
+                        //Setting dates
+                        //date1 = dates.parse(CurrentDate)
+                        date2 = dates.parse(holdDue.toString())
+
+                        //Comparing dates
+
+                        val difference = date2.getTime() - CurrentDate;
+                        val due = (difference / (24 * 60 * 60 * 1000)).toInt();
 
                         newAlarm.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-
-                        if(due == null || due == "")
-                        {
-                            padding =  newAlarm.paddingBottom; // padding size if no due date is found or is due/ past due
-                        }
-                        else {
-                            due = due.toString();
-                            due = due.toInt();
+//
+//                        if(due == null || due == "")
+//                        {
+//                            padding =  newAlarm.paddingBottom; // padding size if no due date is found or is due/ past due
+//                        }
+//                        else {
+//                            due = due.toString();
+//                            due = due.toInt();
 
                             if(due == null )
                             {
@@ -179,7 +231,7 @@ class MainActivity : AppCompatActivity() {
                             {
                                 padding = newAlarm.paddingBottom  + (padding * (14 - due)) - 40; // padding set to corrospond with the number of days till due;
                             }
-                        }
+//                        }
 
 
                         newAlarm.setPadding(newAlarm.paddingLeft, newAlarm.paddingTop, newAlarm.paddingRight, padding);
@@ -192,6 +244,10 @@ class MainActivity : AppCompatActivity() {
                             }
                             padding--;
                             newAlarm.setPadding(newAlarm.paddingLeft, newAlarm.paddingTop, newAlarm.paddingRight, padding);
+                        }
+
+                        newAlarm.setOnClickListener(){
+                            daysTillDue(newAlarm.contentDescription.toString())
                         }
 
                         courseInput.setText(""); // clear the text of the input
@@ -231,5 +287,31 @@ class MainActivity : AppCompatActivity() {
             view = View(activity)
         }
         imm!!.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    fun daysTillDue(FinalDate: String)
+    {
+        // sourced from https://stackoverflow.com/questions/21285161/android-difference-between-two-dates
+        val CurrentDate = current.time;
+
+        val date1: Date
+        val date2: Date
+
+        val dates = SimpleDateFormat("dd/MM/yyyy hh:mm")
+
+        //Setting dates
+        //date1 = dates.parse(CurrentDate)
+        date2 = dates.parse(FinalDate)
+
+        //Comparing dates
+
+        val difference = date2.getTime() - CurrentDate;
+        val differenceDays = difference / (24 * 60 * 60 * 1000);
+        val differenceHours = (difference / ( 60 * 60 * 1000)) % 24;
+
+        //Convert long to String
+        val dayDifference = differenceDays.toInt().toString() + "Days, " + differenceHours.toInt().toString() + "Hours";
+
+        Toast.makeText(this, dayDifference.toString(), Toast.LENGTH_LONG).show()
     }
 }

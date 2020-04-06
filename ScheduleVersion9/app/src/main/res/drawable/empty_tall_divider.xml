@@ -5,3 +5,5 @@
             android:height="0dp"
             android:width="8dp"/>
 </shape>
+
+        <!-- Sourced from https://stackoverflow.com/questions/4259467/how-to-make-space-between-linearlayout-children -->

@@ -5,22 +5,25 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity" android:background="#8F8F8F">
+        tools:context=".MainActivity" android:background="#4B4A4A">
 
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/nav_view" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/colorPrimary" android:backgroundTint="@color/colorPrimary">
         <Button
                 android:text="Schedule"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/nav_list" android:layout_weight="1"/>
+                android:layout_height="wrap_content" android:id="@+id/nav_list" android:layout_weight="1"
+                android:backgroundTint="@color/colorPrimaryLight"/>
         <Button
                 android:text="New"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/nav_create" android:layout_weight="1"/>
+                android:layout_height="wrap_content" android:id="@+id/nav_create" android:layout_weight="1"
+                android:backgroundTint="@color/colorPrimaryLight"/>
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -96,22 +99,42 @@
                 android:text="/"
                 app:layout_constraintBottom_toBottomOf="@+id/day_input"
                 app:layout_constraintStart_toEndOf="@+id/day_input"
-                app:layout_constraintTop_toTopOf="@+id/day_input"/>
+                app:layout_constraintTop_toTopOf="@+id/day_input"
+                android:textColorHint="@color/colorHint" android:textColor="@color/colorHint"/>
 
+        <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textColorHint="@color/colorHint"
+                app:layout_constraintBottom_toBottomOf="@+id/hour_input"
+                app:layout_constraintTop_toTopOf="@+id/hour_input" app:layout_constraintStart_toEndOf="@+id/hour_input"
+                android:layout_marginStart="8dp" android:textColor="@color/colorHint"/>
+        <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/"
+                android:textColorHint="@color/colorHint"
+                app:layout_constraintTop_toTopOf="@+id/month_input"
+                app:layout_constraintStart_toEndOf="@+id/month_input" android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/month_input" android:textColor="@color/colorHint"/>
         <EditText
                 android:id="@+id/day_input"
-                android:layout_width="58dp"
+                android:layout_width="39dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
                 android:ems="10"
                 android:hint="DD"
                 android:inputType="number"
                 app:layout_constraintStart_toStartOf="@+id/course_input"
-                app:layout_constraintTop_toBottomOf="@+id/course_input"/>
+                app:layout_constraintTop_toBottomOf="@+id/course_input"
+                android:textColorHint="@color/colorHint"/>
 
         <EditText
                 android:id="@+id/month_input"
-                android:layout_width="62dp"
+                android:layout_width="43dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:ems="10"
@@ -119,19 +142,45 @@
                 android:inputType="number"
                 app:layout_constraintBottom_toBottomOf="@+id/day_input"
                 app:layout_constraintStart_toEndOf="@+id/textView2"
-                app:layout_constraintTop_toTopOf="@+id/day_input"/>
+                app:layout_constraintTop_toTopOf="@+id/day_input"
+                android:textColorHint="@color/colorHint"/>
 
         <EditText
-                android:id="@+id/time_input"
-                android:layout_width="wrap_content"
+                android:id="@+id/year_input"
+                android:layout_width="43dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:ems="10"
-                android:hint="10:00"
-                android:inputType="time"
+                android:hint="YY"
+                android:inputType="number"
+                android:textColorHint="@color/colorHint"
+                app:layout_constraintTop_toTopOf="@+id/month_input"
+                app:layout_constraintBottom_toBottomOf="@+id/month_input"
+                app:layout_constraintStart_toEndOf="@+id/textView3" android:layout_marginStart="8dp"
+                app:layout_constraintVertical_bias="0.0"/>
+        <EditText
+                android:id="@+id/hour_input"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:ems="10"
+                android:hint="10"
+                android:inputType="number|time"
                 app:layout_constraintStart_toStartOf="@+id/day_input"
-                app:layout_constraintTop_toBottomOf="@+id/day_input"/>
+                app:layout_constraintTop_toBottomOf="@+id/day_input"
+                android:textColorHint="@color/colorHint"/>
 
+        <EditText
+                android:id="@+id/minute_input"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="00"
+                android:inputType="time"
+                android:textColorHint="@color/colorHint" android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/month_input" app:layout_constraintTop_toTopOf="@+id/hour_input"
+                app:layout_constraintBottom_toBottomOf="@+id/hour_input"
+                app:layout_constraintStart_toEndOf="@+id/textView4" android:layout_marginStart="8dp"
+                app:layout_constraintHorizontal_bias="0.0" app:layout_constraintVertical_bias="0.0"/>
         <Button
                 android:id="@+id/save_alarm"
                 android:layout_width="wrap_content"
@@ -140,7 +189,16 @@
                 android:layout_marginEnd="8dp"
                 android:text="Save"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" android:backgroundTint="@color/colorPrimaryLight"/>
+        <Button
+                android:text="am"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/ampm"
+                app:layout_constraintTop_toTopOf="@+id/hour_input"
+                app:layout_constraintBottom_toBottomOf="@+id/hour_input"
+                android:backgroundTint="@color/colorPrimaryLight" app:layout_constraintVertical_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/minute_input" android:layout_marginStart="8dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
