@@ -223,10 +223,15 @@ class MainActivity : AppCompatActivity() {
                             {
                                 padding =  newAlarm.paddingBottom; // max padding size if no due date is found
                             }
-                            else if (due <= 0)
+                            else if (due <= 0 &&
+                                0 >= difference)
                             {
                                 padding = newAlarm.paddingBottom + (padding * (14)) - 40;// max padding size if is due/ past due
                                 newAlarm.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                            }
+                            else if (due <= 0 )
+                            {
+                                padding = newAlarm.paddingBottom + (padding * (14)) - 40;// max padding size if is due/ past due
                             }
                             else if (due >= 14)
                             {
@@ -257,6 +262,11 @@ class MainActivity : AppCompatActivity() {
 
                         courseInput.setText(""); // clear the text of the input
                         dayInput.setText(""); // clear the text of the input
+                        monthInput.setText(""); // clear the text of the input
+                        yearInput.setText(""); // clear the text of the input
+                        hourInput.setText(""); // clear the text of the input
+                        minuteInput.setText(""); // clear the text of the input
+                        ampm.text = "am"
 
 //                        newAlarm.gravity = 50;
                         alarmArange.addView(newAlarm); // put the item in the list
